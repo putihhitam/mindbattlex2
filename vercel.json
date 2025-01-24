@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/mindbattle.html"
+      "destination": "/cerdascermat6.html"
     }
   ]
 }
