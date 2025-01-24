@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interaktif</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .input-answer, .option-group {
+            display: block;
+            margin: 10px 0;
+            font-size: 1em;
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .submit-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .wrong {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz Interaktif</h1>
+        <div id="questions">
+            <!-- Soal 1-5 -->
+            <div class="question">
+                <input type="text" id="answer1" class="input-answer" placeholder="Jawaban Soal 1" />
+                <input type="text" id="answer2" class="input-answer" placeholder="Jawaban Soal 2" />
+                <input type="text" id="answer3" class="input-answer" placeholder="Jawaban Soal 3" />
+                <input type="text" id="answer4" class="input-answer" placeholder="Jawaban Soal 4" />
+                <input type="text" id="answer5" class="input-answer" placeholder="Jawaban Soal 5" />
+                <input type="text" id="answer6" class="input-answer" placeholder="Jawaban Soal 6" />
+                <input type="text" id="answer7" class="input-answer" placeholder="Jawaban Soal 7" />
+                <input type="text" id="answer8" class="input-answer" placeholder="Jawaban Soal 8" />
+                <input type="text" id="answer9" class="input-answer" placeholder="Jawaban Soal 9" />
+            </div>
+            <!-- Soal 7-10 -->
+            <div class="question">
+                <label for="answer10">Soal 10:</label>
+                <select id="answer10" class="option-group">
+                    <option value="">Pilih jawaban</option>
+                    <option value="a">Jaringan Komputer</option>
+                    <option value="b">IP ADDRESS</option>
+                    <option value="c">Hardware</option>
+                    <option value="d">Software</option>
+                    <option value="e">Konektor kabel</option>
+                </select>
+                <label for="answer11">Soal 11:</label>
+                <select id="answer11" class="option-group">
+                    <option value="">Pilih jawaban</option>
+                    <option value="a">Jaringan Komputer</option>
+                    <option value="b">LAN, Man, Wan</option>
+                    <option value="c">Jaringan Lokal dan Internet</option>
+                    <option value="d">Internet</option>
+                    <option value="e">Jaringan berdasarkan geografis</option>
+                </select>
+                <label for="answer12">Soal 12:</label>
+                <select id="answer12" class="option-group">
+                    <option value="">Pilih jawaban</option>
+                    <option value="a">1990</option>
+                    <option value="b">1991</option>
+                    <option value="c">1992</option>
+                    <option value="d">1993</option>
+                    <option value="e">1994</option>
+                </select>
+                <label for="answer13">Soal 13:</label>
+                <select id="answer13" class="option-group">
+                    <option value="">Pilih jawaban</option>
+                    <option value="a">Australia</option>
+                    <option value="b">Amerika Serikat</option>
+                    <option value="c">Belanda</option>
+                    <option value="d">Denmark</option>
+                    <option value="e">Inggris</option>
+                </select>
+                <label for="answer14">Soal 14:</label>
+                <select id="answer14" class="option-group">
+                    <option value="">Pilih jawaban</option>
+                    <option value="a">384 Kbps - 2 Mbps</option>
+                    <option value="b">35 Kbps - 171 Kbps</option>
+                    <option value="c">120 Kbps - 384 Kbps</option>
+                    <option value="d">100 Mbps</option>
+                    <option value="e">600 Kbps - 10 Mbps</option>
+                </select>
+            </div>
+            <button class="submit-btn" onclick="checkAnswers()">Submit</button>
+        </div>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        // Jawaban benar
+        const correctAnswers = [
+            "gprs", 
+            "1001110111", 
+            "high speed packet acces", 
+            "local area network", 
+            "wan", 
+            "base station controller", 
+            "3774", 
+            "1901", 
+            "100", // Soal 1 - 9
+            "b",
+            "c",
+            "b",
+            "c",
+            "e" // Soal 10-14
+        ];
+        
+        const startTime = new Date(); // Waktu mulai
+
+        function checkAnswers() {
+            let wrongCount = 0;
+            const userAnswers = [
+                document.getElementById("answer1").value.trim().toLowerCase(),
+                document.getElementById("answer2").value.trim().toLowerCase(),
+                document.getElementById("answer3").value.trim().toLowerCase(),
+                document.getElementById("answer4").value.trim().toLowerCase(),
+                document.getElementById("answer5").value.trim().toLowerCase(),
+                document.getElementById("answer6").value.trim().toLowerCase(),
+                document.getElementById("answer7").value.trim().toLowerCase(),
+                document.getElementById("answer8").value.trim().toLowerCase(),
+                document.getElementById("answer9").value.trim().toLowerCase(),
+                document.getElementById("answer10").value,
+                document.getElementById("answer11").value,
+                document.getElementById("answer12").value,
+                document.getElementById("answer13").value,
+                document.getElementById("answer14").value
+            ];
+
+            // Cek jawaban salah
+            for (let i = 0; i < correctAnswers.length; i++) {
+                if (userAnswers[i] !== correctAnswers[i]) {
+                    wrongCount++;
+                }
+            }
+
+            // Hitung waktu
+            const endTime = new Date();
+            const timeTaken = Math.round((endTime - startTime) / 1000); // Waktu dalam detik
+
+            // Tampilkan hasil
+            const resultDiv = document.getElementById("result");
+            if (wrongCount === 0) {
+                resultDiv.textContent = `Semua Jawaban Benar! Waktu pengerjaan: ${timeTaken} detik.`;
+                resultDiv.className = "result correct";
+            } else {
+                resultDiv.textContent = `Jawaban Salah: ${wrongCount}. Waktu pengerjaan: ${timeTaken} detik.`;
+                resultDiv.className = "result wrong";
+            }
+            resultDiv.style.display = "block";
+
+            // Tambahkan suara
+            let speech = new SpeechSynthesisUtterance(resultDiv.textContent);
+            speech.lang = "id-ID";
+            speech.volume = 1; // Volume (0-1)
+            speech.rate = 1; // Kecepatan bicara (0.1 - 10)
+            speech.pitch = 1; // Nada suara (0 - 2)
+            window.speechSynthesis.speak(speech);
+        }
+       
+    </script>
+</body>
+</html>
